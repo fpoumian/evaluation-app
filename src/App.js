@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+import { ConfigProvider } from "antd";
+import { MainPage } from "./pages/Main/MainPage";
 import './App.css';
 
 function App() {
+
+    const primaryColor = '#265183';
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ConfigProvider
+        theme={{
+            token: {
+                colorPrimary: primaryColor,
+                colorPrimaryText: primaryColor,
+                colorPrimaryTextActive: primaryColor,
+                colorText: primaryColor,
+            },
+            components: {
+                Typography: {
+                    titleMarginTop: '0.25rem'
+                }
+            }
+      }}
+      >
+          <div className="App">
+              <MainPage />
+          </div>
+      </ConfigProvider>
   );
 }
 
