@@ -1,0 +1,9 @@
+.sidebarSpace {
+    background: white;
+    padding: 1rem;
+    display: flex;
+}
+
+.sidebarInstructionText {
+    font-size: 16px;
+}
