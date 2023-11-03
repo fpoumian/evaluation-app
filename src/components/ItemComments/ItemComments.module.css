@@ -1,0 +1,13 @@
+.itemComments {
+    position: relative;
+}
+.itemCommentsLabel {
+    position: absolute;
+    z-index: 9999;
+    top: -10px;
+    left: 20px;
+    font-size: 0.75rem;
+    display: block;
+    background-color: white;
+    padding: 1px 3px;
+}
