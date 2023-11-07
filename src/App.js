@@ -1,4 +1,4 @@
-import { ConfigProvider, Spin } from "antd";
+import { ConfigProvider } from "antd";
 import { MainPage } from "./pages/Main/MainPage";
 import { AuthPage } from "./pages/Auth/AuthPage";
 import "./App.css";
@@ -71,7 +71,6 @@ function App() {
     >
       <AppContext.Provider value={appContextValue}>
         <div className="App">
-          {/*{isLoadingAuth && <Spin size="large" fullscreen />}*/}
           {isUserAuthenticated && <MainPage />}
           {!isUserAuthenticated && <AuthPage />}
         </div>

@@ -4,7 +4,7 @@ import { getStorage } from "firebase/storage";
 import { initializeFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB3AGuJeJ5wdvU7a1F5UIyuLZci5lmRxnA",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "evaluation-app-e5eb3.firebaseapp.com",
   databaseURL: "https://evaluation-app-e5eb3-default-rtdb.firebaseio.com",
   projectId: "evaluation-app-e5eb3",
