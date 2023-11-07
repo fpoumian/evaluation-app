@@ -1,8 +1,10 @@
 import { List, Avatar, Rate } from "antd";
 import avatar from "./defaultavatar.png";
+import PropTypes from "prop-types";
 import { useMemo } from "react";
+
 export function AllComments(props) {
-  const { comments } = props;
+  const { comments = [] } = props;
   const data = useMemo(() => {
     return comments.map((comment) => ({
       title: comment.email,
@@ -28,3 +30,7 @@ export function AllComments(props) {
     />
   );
 }
+
+AllComments.propTypes = {
+  comments: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};

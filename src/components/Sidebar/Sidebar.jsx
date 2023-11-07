@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import { PreviewCard } from "components/PreviewCard/PreviewCard";
 import { AddNewItemModal } from "components/AddNewItemModal/AddNewItemModal";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const { Text } = Typography;
 
@@ -42,6 +43,7 @@ export function Sidebar(props) {
           {pictureList?.length > 0 &&
             pictureList.map((item) => (
               <PreviewCard
+                key={item?.id}
                 onClick={onPreviewCardClick}
                 pictureId={item?.id}
                 title={item?.title}
@@ -67,3 +69,8 @@ export function Sidebar(props) {
     </>
   );
 }
+
+Sidebar.propTypes = {
+  pictureList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onPreviewCardClick: PropTypes.func.isRequired,
+};

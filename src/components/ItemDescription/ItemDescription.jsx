@@ -36,6 +36,13 @@ export function ItemDescription(props) {
 }
 
 ItemDescription.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  pictureRating: PropTypes.number.isRequired,
+  onPictureRatingChange: PropTypes.func.isRequired,
+};
+
+ItemDescription.defaultProps = {
+  title: "",
+  description: "",
 };

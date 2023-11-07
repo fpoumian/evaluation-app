@@ -143,6 +143,11 @@ Content.propTypes = {
   picture: PropTypes.shape({
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    file: PropTypes.string.isRequired,
-  }).isRequired,
+    file: PropTypes.string,
+  }),
+};
+
+Content.defaultProps = {
+  picture: null,
+  file: null,
 };

@@ -1,9 +1,10 @@
-import { Modal, Button, Form, Input, Upload, Card } from "antd";
+import { Modal, Button, Form, Input, Upload } from "antd";
 import kebabCase from "lodash/kebabCase";
 import { v4 } from "uuid";
 import { db, storage } from "config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import get from "lodash/get";
+import PropTypes from "prop-types";
 
 import { PlusOutlined } from "@ant-design/icons";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -123,3 +124,9 @@ export function AddNewItemModal(props) {
     </Modal>
   );
 }
+
+AddNewItemModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
+};

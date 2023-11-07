@@ -1,4 +1,5 @@
 import { Input } from "antd";
+import PropTypes from "prop-types";
 
 import styles from "./ItemComments.module.css";
 
@@ -21,3 +22,8 @@ export function ItemComments(props) {
     </div>
   );
 }
+
+ItemComments.propTypes = {
+  comments: PropTypes.string.isRequired,
+  onCommentsTextAreaChange: PropTypes.func.isRequired,
+};
