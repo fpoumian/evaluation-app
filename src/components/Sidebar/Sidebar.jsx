@@ -7,7 +7,6 @@ const { Text } = Typography;
 export function Sidebar(props) {
   const { pictureList, onPreviewCardClick } = props;
 
-  console.log("pictureList", pictureList);
   return (
     <aside>
       <Space className={styles.sidebarSpace} direction="vertical" size="middle">

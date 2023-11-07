@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Button, Form, Input, message, Typography } from "antd";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "config/firebase";
+
+const { Link } = Typography;
 
 export function AuthForm() {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [clientReady, setClientReady] = useState(false);
+  const [isSignUpForm, setIsSignUpForm] = useState(false);
 
   // To disable submit button at the beginning.
   useEffect(() => {
@@ -28,10 +34,32 @@ export function AuthForm() {
     }
   };
 
+  const handleSignUpBtnClick = async () => {
+    try {
+      const { email, password } = await form.validateFields();
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (e) {
+      console.log(e.code);
+      console.error(e);
+      messageApi.open({
+        type: "error",
+        content: e.message,
+      });
+    }
+  };
+
+  const handleSignUpLinkClick = () => {
+    setIsSignUpForm(true);
+  };
+
+  const handleLoginLinkClick = () => {
+    setIsSignUpForm(false);
+  };
+
   return (
     <>
       {contextHolder}
-      <Form form={form} layout="inline">
+      <Form form={form} layout="vertical">
         <Form.Item
           name="email"
           rules={[
@@ -65,8 +93,48 @@ export function AuthForm() {
             placeholder="Password"
           />
         </Form.Item>
+        {isSignUpForm && (
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "The new password that you entered do not match!",
+                    ),
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+        )}
+        <div>
+          {!isSignUpForm && (
+            <Link onClick={handleSignUpLinkClick}>
+              Don't have an account? Signup
+            </Link>
+          )}
+          {isSignUpForm && (
+            <Link onClick={handleLoginLinkClick}>
+              Already have an account? Login
+            </Link>
+          )}
+        </div>
         <Form.Item shouldUpdate className="mt-3">
-          {() => (
+          {!isSignUpForm && (
             <Button
               block
               type="primary"
@@ -74,12 +142,27 @@ export function AuthForm() {
               onClick={handleLogInBtnClick}
               disabled={
                 !clientReady ||
-                !form.isFieldsTouched(true) ||
                 !!form.getFieldsError().filter(({ errors }) => errors.length)
                   .length
               }
             >
               Log in
+            </Button>
+          )}
+          {isSignUpForm && (
+            <Button
+              block
+              type="primary"
+              htmlType="submit"
+              onClick={handleSignUpBtnClick}
+              disabled={
+                !clientReady ||
+                !form.isFieldsTouched(true) ||
+                !!form.getFieldsError().filter(({ errors }) => errors.length)
+                  .length
+              }
+            >
+              Sign up
             </Button>
           )}
         </Form.Item>
