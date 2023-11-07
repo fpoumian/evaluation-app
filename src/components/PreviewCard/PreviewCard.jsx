@@ -1,4 +1,4 @@
-import { Card, Flex, Rate, Typography } from "antd";
+import { Card, Flex, Rate, Typography, Image } from "antd";
 import PropTypes from "prop-types";
 import styles from "./PreviewCard.module.css";
 
@@ -13,10 +13,9 @@ export function PreviewCard(props) {
       bodyStyle={{ padding: "12px" }}
       hoverable
       cover={
-        <img
-          alt="placeholder"
-          src={require(`../../assets/pictures/${thumbnail}`)}
-        />
+        <div className={styles.previewCardCover}>
+          <Image alt={title} src={thumbnail} preview={false} />
+        </div>
       }
     >
       <Flex justify="space-between" align="center">

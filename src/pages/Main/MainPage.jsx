@@ -7,7 +7,7 @@ import keyBy from "lodash/keyBy";
 import get from "lodash/get";
 
 import { db } from "config/firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 export const MainPage = () => {
   const [pictureList, setPictureList] = useState([]);
@@ -16,7 +16,8 @@ export const MainPage = () => {
   const pictureCollectionRef = collection(db, "pictures");
 
   useEffect(() => {
-    return onSnapshot(pictureCollectionRef, (snapshot) => {
+    const colQuery = query(pictureCollectionRef, orderBy("createdAt", "desc"));
+    return onSnapshot(colQuery, (snapshot) => {
       const filteredData = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,

@@ -9,6 +9,9 @@ import {
   addDoc,
   updateDoc,
   onSnapshot,
+  Timestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "config/firebase";
 import { useContext, useEffect, useState } from "react";
@@ -34,7 +37,11 @@ export function Content(props) {
 
   useEffect(() => {
     if (!pictureCommentsCollectionRef) return;
-    return onSnapshot(pictureCommentsCollectionRef, (snapshot) => {
+    const colQuery = query(
+      pictureCommentsCollectionRef,
+      orderBy("createdAt", "desc"),
+    );
+    return onSnapshot(colQuery, (snapshot) => {
       const filteredData = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -57,6 +64,7 @@ export function Content(props) {
         userId: user?.userId,
         rating: pictureRating,
         comments: pictureComments,
+        createdAt: Timestamp.now(),
       };
       const result = await addDoc(pictureCommentsCollectionRef, docData);
       const parentCollectionRef = result?.parent.parent;
@@ -91,11 +99,8 @@ export function Content(props) {
         <Card loading={!picture}>
           <Flex vertical justify="space-between">
             <div>
-              {picture?.file && (
-                <Image
-                  src={require(`../../assets/pictures/${picture?.file}`)}
-                  placeholder={true}
-                />
+              {picture?.pictureUrl && (
+                <Image src={picture.pictureUrl} placeholder={true} />
               )}
             </div>
             <div className="mb-5">

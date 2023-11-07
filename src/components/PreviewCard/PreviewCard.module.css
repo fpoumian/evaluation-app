@@ -2,6 +2,11 @@
     background-color: #EBF4F7;
 }
 
+.previewCardCover {
+    height: 110px;
+    overflow-y: hidden;
+}
+
 .averageRating {
     background-color: #E1EFF2;
     display: flex;
