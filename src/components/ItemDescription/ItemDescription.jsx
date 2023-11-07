@@ -1,33 +1,41 @@
 import { Row, Col, Typography, Rate, Flex } from "antd";
+import PropTypes from "prop-types";
 
 import styles from "./ItemDescription.module.css";
 
 const { Title, Paragraph } = Typography;
 
-export function ItemDescription() {
+export function ItemDescription(props) {
+  const { title, description, pictureRating, onPictureRatingChange } = props;
   return (
     <>
       <Row display="flex" align="middle">
         <Col span={10}>
-          <Title level={2}>Beautiful View of Moraine Lake</Title>
+          <Title level={2}>{title}</Title>
         </Col>
         <Col span={13} pull={1}>
           <Flex justify="flex-end">
-            <Rate style={{ fontSize: "40px" }} />
+            <Rate
+              allowClear={false}
+              style={{ fontSize: "40px" }}
+              onChange={onPictureRatingChange}
+              value={pictureRating}
+            />
           </Flex>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
           <Paragraph className={styles.itemDescriptionText}>
-            A landscape lake is a serene and picturesque body of water nestled
-            amidst the beauty of the natural world. It is often characterized by
-            its stunning visual appeal, with crystal-clear waters reflecting the
-            surrounding landscape. The lake is typically framed by a variety of
-            natural elements, creating a harmonious and tranquil scene.
+            {description}
           </Paragraph>
         </Col>
       </Row>
     </>
   );
 }
+
+ItemDescription.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
