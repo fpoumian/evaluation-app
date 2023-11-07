@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Spin } from "antd";
 import { MainPage } from "./pages/Main/MainPage";
 import { AuthPage } from "./pages/Auth/AuthPage";
 import "./App.css";
@@ -10,32 +10,42 @@ export const AppContext = createContext({});
 
 function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log("App useEffect");
-    if (auth?.currentUser) {
+    const locallyStoredUser = JSON.parse(localStorage.getItem("user"));
+    if (locallyStoredUser) {
       setIsUserAuthenticated(true);
+      setUser(locallyStoredUser);
     } else {
       setIsUserAuthenticated(false);
     }
-  }, [auth]);
+  }, []);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setIsUserAuthenticated(true);
-    } else {
-      setIsUserAuthenticated(false);
-    }
-  });
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setIsUserAuthenticated(true);
+        setUser(user);
+      } else {
+        localStorage.removeItem("user");
+        setIsUserAuthenticated(false);
+      }
+    });
+    return () => {
+      unsub();
+    };
+  }, []);
 
   const appContextValue = useMemo(() => {
     return {
       user: {
-        email: auth?.currentUser?.email,
-        userId: auth?.currentUser?.uid,
+        email: user?.email,
+        userId: user?.uid,
       },
     };
-  }, [isUserAuthenticated]);
+  }, [user]);
 
   const primaryColor = "#265183";
   return (
@@ -61,6 +71,7 @@ function App() {
     >
       <AppContext.Provider value={appContextValue}>
         <div className="App">
+          {/*{isLoadingAuth && <Spin size="large" fullscreen />}*/}
           {isUserAuthenticated && <MainPage />}
           {!isUserAuthenticated && <AuthPage />}
         </div>
